@@ -607,7 +607,6 @@ async function ingestDocuments() {
   const embedding = await embeddings.embedQuery("test");
   console.log("Embedding length:", embedding.length);
 
-  // Initialize text splitter
   const textSplitter = new RecursiveCharacterTextSplitter({
     chunkSize: 1000,
     chunkOverlap: 200,
@@ -617,7 +616,6 @@ async function ingestDocuments() {
 
   const documents: Document[] = [];
 
-  // Process each documentation source
   for (const [key, source] of Object.entries(DOCS_SOURCES)) {
     console.log(`Processing ${source.title}...`);
 
@@ -642,7 +640,6 @@ async function ingestDocuments() {
 
   console.log(`📝 Created ${documents.length} document chunks`);
 
-  // Store in Pinecone
   console.log("💾 Storing documents in Pinecone...");
   const vectorStore = await PineconeStore.fromDocuments(documents, embeddings, {
     pineconeIndex: index as any,
@@ -661,7 +658,6 @@ async function ingestDocuments() {
   return vectorStore;
 }
 
-// Helper function to test local Ollama connection
 async function testOllamaConnection() {
   console.log("🔍 Testing Ollama connection...");
 
@@ -671,7 +667,6 @@ async function testOllamaConnection() {
       baseUrl: "http://localhost:11434",
     });
 
-    // Test with a simple text
     const testText = "Hello, this is a test of the nomic-embed-text model.";
     const embeddings = await ollamaEmbeddings.embedQuery(testText);
 
@@ -692,7 +687,6 @@ async function testOllamaConnection() {
   }
 }
 
-// Run ingestion if called directly
 if (require.main === module) {
   // Uncomment the next line to test Ollama connection first
   // testOllamaConnection().then(() => process.exit(0));
